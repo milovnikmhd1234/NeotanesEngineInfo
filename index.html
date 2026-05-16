@@ -1,147 +1,387 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LED Panel</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Czech Bus Simulátor 2.0 - Komunita</title>
+    <style>
+        :root {
+            --primary: #ff4757;
+            --primary-hover: #e84118;
+            --bg-dark: #1e1e24;
+            --bg-card: #2a2a35;
+            --text-light: #f5f6fa;
+            --text-muted: #a4b0be;
+            --warning: #ffa502;
+            --danger: #ff4757;
+            --success: #2ed573;
+        }
 
-<style>
-body{
-    margin:0;
-    background:black;
-    color:lime;
-    font-family:monospace;
-}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-/* top bar */
-.top{
-    background:#111;
-    padding:10px;
-    color:white;
-    display:flex;
-    justify-content:space-between;
-}
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
 
-/* panel */
-.panel{
-    padding:10px;
-}
+        header {
+            background: linear-gradient(135deg, #2c3e50, #000000);
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--primary);
+        }
 
-/* canvas */
-canvas{
-    background:#000;
-    border:1px solid #333;
-    margin-top:10px;
-}
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
 
-/* buttons */
-button{
-    background:#222;
-    color:white;
-    border:1px solid #444;
-    padding:8px;
-    margin:5px;
-}
-</style>
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .full-width {
+                grid-column: span 2;
+            }
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border-left: 5px solid var(--primary);
+        }
+
+        .card h2 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        li::before {
+            content: "•";
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+
+        .owner-box {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid var(--primary);
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            background-color: var(--primary);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 5px;
+            display: inline-block;
+        }
+
+        .role-group {
+            margin-bottom: 15px;
+        }
+
+        .role-group h3 {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .rules-category {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 3px solid var(--warning);
+        }
+
+        .rules-category.danger {
+            border-left-color: var(--danger);
+        }
+
+        .rules-category h3 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #5865F2; /* Discord Modrá */
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: background 0.3s ease;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #4752C4;
+        }
+
+        .roblox-btn {
+            background-color: #000;
+            border: 1px solid #fff;
+        }
+        .roblox-btn:hover {
+            background-color: #222;
+        }
+
+        .info-text {
+            font-style: italic;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid #333;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="top">
-    <div>LED PANEL SYSTEM</div>
-    <button onclick="window.location.href='index.html'">Zpět</button>
-</div>
+    <header>
+        <h1>Czech Bus Simulátor 2.0</h1>
+        <p>Oficiální stránka naší herní komunity a projektů</p>
+    </header>
 
-<div class="panel">
+    <div class="container">
+        <div class="grid">
+            
+            <div class="card">
+                <h2>Vedení serveru</h2>
+                <p style="margin-bottom: 15px;">Za celým tímto projektem stojí náš hlavní zakladatel a vedení:</p>
+                <div class="owner-box">
+                    👑 Hlavní majitel: Zdeneček
+                </div>
+                <p>Připoj se k našemu oficiálnímu komunitnímu serveru:</p>
+                <a href="https://discord.gg/jPJuJ7d4s4" target="_blank" class="btn">Připojit se na Discord</a>
+                <a href="https://www.roblox.com" target="_blank" class="btn roblox-btn" style="margin-left: 10px;">Najdi nás na Robloxu</a>
+            </div>
 
-<h2>Interaktivní LED mapa</h2>
+            <div class="card">
+                <h2>Nabírání členů</h2>
+                <p>Hledáš skvělou partu lidí nebo se chceš podílet na tvorbě? Aktuálně máme otevřené brány pro nové tváře!</p>
+                <p style="margin-top: 10px; font-weight: bold; color: #2ed573;">● Hledáme: Řidiče, moderátory i vývojáře!</p>
+                <a href="https://discord.gg/jPJuJ7d4s4" target="_blank" class="btn" style="background-color: var(--primary);">Podat přihlášku přes Discord</a>
+            </div>
 
-<input id="textInput" placeholder="např. 192 Krnov">
-<button onclick="enableAdd()">Přidat bod</button>
-<button onclick="clearPoints()">Vymazat</button>
-<button onclick="downloadPNG()">Stáhnout PNG</button>
+            <div class="card full-width">
+                <h2>Komunitní a herní role</h2>
+                <p class="info-text">Aktuální struktura rolí a obsazení platné od dnešního dne do 1. 9. 2026</p>
+                
+                <div class="grid" style="gap: 20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                    <div class="role-group">
+                        <h3>Vedení serveru</h3>
+                        <ul>
+                            <li><strong>Majitel serveru</strong> <span class="badge" style="background:#ff4757;">Vlastník</span></li>
+                            <li><strong>Správní rada EU</strong> <span class="badge" style="background:#ff4757;">@Zdeneček Č.1</span></li>
+                            <li><strong>Majitel serveru</strong> <span class="badge" style="background:#e84118;">@sisilokace (Spolumajitel)</span></li>
+                            <li><strong>Prezident serveru</strong> <span class="badge" style="background:#ffa502;">@Hrbík (do 1.9.2026)</span></li>
+                            <li><strong>Víceprezident serveru</strong> <span class="badge" style="background:#ffb142;">@Happy Pegge</span></li>
+                            <li><strong>Premiér</strong> <span class="badge" style="background:#747d8c;">Volné místo</span></li>
+                            <li><strong>Ministři</strong> <span class="badge" style="background:#747d8c;">Volné místo</span></li>
+                        </ul>
+                    </div>
 
-<br>
+                    <div class="role-group">
+                        <h3>Zástupci vedení</h3>
+                        <ul>
+                            <li><strong>Hejtmani ČR</strong> <span class="badge" style="background:#2ed573;">@Adámek.</span></li>
+                            <li><strong>Předseda krajů ČR</strong> <span class="badge" style="background:#1e90ff;">Volné místo</span></li>
+                            <li><strong>Starosta města</strong> <span class="badge" style="background:#1e90ff;">Volné místo</span></li>
+                            <li><strong>Radní města</strong> <span class="badge" style="background:#535c68;">Volné místo</span></li>
+                        </ul>
+                    </div>
 
-<canvas id="c" width="700" height="400"></canvas>
+                    <div class="role-group">
+                        <h3>Členové serveru</h3>
+                        <ul>
+                            <li><strong>Generální ředitel organizace</strong></li>
+                            <li><strong>Ředitel organizace</strong></li>
+                            <li><strong>Vedoucí oddělení</strong></li>
+                            <li><strong>Zaměstnanci</strong></li>
+                            <li><strong>Klient</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-</div>
+            <div class="card full-width">
+                <h2>Pravidla našeho serveru</h2>
+                <p class="info-text">Tato pravidla vám předkládá Majitel serveru. Žádáme všechny členy o jejich přísné dodržování. Pravidla jsou platná do 1. 9. 2026, poté se mohou v závislosti na novém majiteli měnit.</p>
+                
+                <div class="rules-category">
+                    <h3>⚠️ Napomenutí (pro nové členy a mírnější prohřešky)</h3>
+                    <ul>
+                        <li>Časté spamování na chatu.</li>
+                        <li>Za hrubé porušení nařízení ze strany vedení serveru.</li>
+                        <li>Opakované žádání o povýšení.</li>
+                        <li>Psaní zpráv do jiných kanálů než je určeno.</li>
+                        <li>Pingování vyšších rolí.</li>
+                    </ul>
+                </div>
 
-<script>
-const canvas = document.getElementById("c");
-const ctx = canvas.getContext("2d");
+                <div class="rules-category">
+                    <h3>⏳ Vykázání z chatu (Mute na 1 týden)</h3>
+                    <ul>
+                        <li>Zákaz pingovat vyšší role než je dovoleno (za porušení je pauza).</li>
+                        <li>Text ve formě spamu je zakázán (trestá se maximálně na 1 týden).</li>
+                        <li>Vyptávání se na to, zda budeš povýšen.</li>
+                        <li>Zákaz psaní zpráv do jiných kanálů než je určeno.</li>
+                        <li>Je zakázáno používat sexuální podtext a nevhodné smajlíky.</li>
+                    </ul>
+                </div>
 
-let addMode = false;
-let points = [];
+                <div class="rules-category danger">
+                    <h3>🚪 Vyloučení ze serveru (Kick)</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:5px;">*Pozor: Návrat je možný pouze přes novou pozvánku!</p>
+                    <ul>
+                        <li>Rozesílání discord pozvánek na náš discord server tam, kde to není dovoleno ani tolerováno.</li>
+                        <li>Vyptávání se na to, zda budeš povýšen.</li>
+                        <li>Navádění ostatních hráčů, aby odešli z našeho serveru.</li>
+                        <li>Smazání důležitých zpráv.</li>
+                        <li>Je přísně zakázáno falšovat jakákoliv jména našich členů.</li>
+                    </ul>
+                </div>
 
-// zapnout režim přidání
-function enableAdd(){
-    addMode = true;
-    alert("Klikni do panelu 🎯");
-}
+                <div class="rules-category danger">
+                    <h3>⛔ Ban na 1 měsíc a 3 dny</h3>
+                    <ul>
+                        <li>Jestliže hráč neuposlechne přímé příkazy vedení serveru.</li>
+                        <li>Odstraňování kanálů či jakýchkoliv cizích zpráv.</li>
+                        <li>Rozesílání discord pozvánek členům mimo náš server.</li>
+                        <li>Navádění ostatních hráčů, aby odešli z našeho serveru.</li>
+                        <li>Pokus o krádež serveru.</li>
+                        <li>Krádež jakýchkoliv jmen či jejich napodobování.</li>
+                    </ul>
+                </div>
 
-// klik do canvasu
-canvas.addEventListener("click", (e)=>{
-    if(!addMode) return;
+                <div class="rules-category danger">
+                    <h3>🚫 Ban na 3 měsíce</h3>
+                    <ul>
+                        <li>Rozesílání discord pozvánek na našem serveru.</li>
+                        <li>Aktivní navádění ostatních hráčů k porušování pravidel / odchodu.</li>
+                        <li>Pokus o krádež serveru.</li>
+                    </ul>
+                </div>
 
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+                <div class="rules-category danger" style="background: rgba(255, 71, 87, 0.15); border-left-width: 5px;">
+                    <h3>💀 PERMABAN (Trvalé vyloučení bez možnosti návratu)</h3>
+                    <ul>
+                        <li>Falšování jmen či jakékoliv jejich napodobování.</li>
+                        <li>Krádež serveru.</li>
+                        <li>Rozesílání pozvánek na jiné servery.</li>
+                        <li>Zlomyslné navádění ostatních hráčů.</li>
+                    </ul>
+                </div>
+            </div>
 
-    const text = document.getElementById("textInput").value || "text";
+            <div class="card">
+                <h2>Současné projekty</h2>
+                <p>Na čem v herním světě Czech bus simulátor 2.0 aktuálně pracujeme:</p>
+                <ul style="margin-top: 10px;">
+                    <li>Optimalizace stávajících modelů autobusů.</li>
+                    <li>Tvorba nového odbavovacího systému pro cestující.</li>
+                    <li>Pravidelné linkové směny a organizované eventy.</li>
+                </ul>
+            </div>
 
-    points.push({x,y,text});
+            <div class="card">
+                <h2>Budoucí projekty</h2>
+                <p>Na co se můžete v nejbližší době těšit:</p>
+                <ul style="margin-top: 10px;">
+                    <li>Kompletní předělávka ekonomiky serveru (nákup vlastních autobusů).</li>
+                    <li>Implementace reálného počasí, které ovlivní jízdní vlastnosti.</li>
+                    <li>Mobilní aplikace pro řidiče (jízdní řády a statistiky).</li>
+                </ul>
+            </div>
 
-    addMode = false;
-    draw();
-});
+            <div class="card">
+                <h2>Budoucí lokace ve hře</h2>
+                <p>Kam se podíváme příště? Plánujeme rozšíření mapy o tato místa:</p>
+                <ul style="margin-top: 10px;">
+                    <li><strong>Nové příměstské linky</strong> – Propojení center s okolními vesnicemi.</li>
+                    <li><strong>Horská oblast</strong> – Náročné zatáčky a serpentiny pro zkušené řidiče.</li>
+                    <li><strong>Moderní autobusové nádraží</strong> – Nové centrum pro setkávání a přestupy.</li>
+                </ul>
+            </div>
 
-// vykreslení
-function draw(){
+            <div class="card full-width">
+                <h2>A mnoho dalšího...</h2>
+                <p>Naše komunita se neustále rozrůstá. Pořádáme pravidelné srazy, soutěže o hodnotné herní odměny a aktivně nasloucháme návrhům našich hráčů. Připoj se k nám ještě dnes přes náš Discord server a zažij ten nejlepší autobusový simulátor na Robloxu!</p>
+                <p style="margin-top: 15px; font-weight: bold; text-align: center;">Všem vám přeje hezký večer váš Majitel serveru! 🚌</p>
+            </div>
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+        </div>
+    </div>
 
-    // TEČKY (grid)
-    ctx.fillStyle = "#222";
-    for(let x=0;x<canvas.width;x+=20){
-        for(let y=0;y<canvas.height;y+=20){
-            ctx.fillRect(x,y,2,2);
-        }
-    }
-
-    // body
-    for(let p of points){
-
-        // bod
-        ctx.fillStyle="lime";
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,5,0,Math.PI*2);
-        ctx.fill();
-
-        // text
-        ctx.fillStyle="white";
-        ctx.font="14px monospace";
-        ctx.fillText(p.text, p.x+8, p.y-8);
-    }
-}
-
-// vymazat
-function clearPoints(){
-    points = [];
-    draw();
-}
-
-// PNG download
-function downloadPNG(){
-    const link = document.createElement("a");
-    link.download = "led-panel.png";
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-}
-
-// start
-draw();
-</script>
+    <footer>
+        <p>&copy; 2026 Czech Bus Simulátor 2.0. Všechna práva vyhrazena. Stránku spravuje tým kolem Zdenečka.</p>
+    </footer>
 
 </body>
 </html>

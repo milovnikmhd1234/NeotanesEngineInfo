@@ -15,6 +15,7 @@
             --warning: #ffa502;
             --danger: #ff4757;
             --success: #2ed573;
+            --nav-height: 70px;
         }
 
         * {
@@ -24,34 +25,111 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        html {
+            scroll-behavior: smooth; /* Zajišťuje plynulý posun po kliknutí v menu */
+        }
+
         body {
             background-color: var(--bg-dark);
             color: var(--text-light);
             line-height: 1.6;
+            padding-top: var(--nav-height); /* Prostor pro fixní horní lištu */
+        }
+
+        /* HORNÍ LIŠTA (NAVIGACE) */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--nav-height);
+            background-color: #111116;
+            border-bottom: 3px solid var(--primary);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .nav-logo {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+            background: rgba(255, 71, 87, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                height: auto;
+                padding: 10px;
+            }
+            .nav-links {
+                gap: 10px;
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-top: 5px;
+            }
+            body {
+                padding-top: 110px; /* Větší mezera na mobilech kvůli zalomení menu */
+            }
         }
 
         header {
             background: linear-gradient(135deg, #2c3e50, #000000);
-            padding: 60px 20px;
+            padding: 80px 20px;
             text-align: center;
             border-bottom: 4px solid var(--primary);
         }
 
         header h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             margin-bottom: 10px;
             letter-spacing: 1px;
         }
 
         header p {
             color: var(--text-muted);
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
 
         .container {
             max-width: 1100px;
             margin: 0 auto;
             padding: 40px 20px;
+        }
+
+        /* Sekce pro Oneclick kotvy */
+        section {
+            scroll-margin-top: calc(var(--nav-height) + 20px); /* Aby nadpis nezalezl pod lištu */
+            margin-bottom: 40px;
         }
 
         .grid {
@@ -75,6 +153,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             border-left: 5px solid var(--primary);
+            height: 100%;
         }
 
         .card h2 {
@@ -162,7 +241,7 @@
 
         .btn {
             display: inline-block;
-            background-color: #5865F2; /* Discord Modrá */
+            background-color: #5865F2; /* Discord barva */
             color: white;
             padding: 12px 24px;
             text-decoration: none;
@@ -203,32 +282,46 @@
 </head>
 <body>
 
-    <header>
+    <nav>
+        <a href="#" class="nav-logo">CBS <span>2.0</span></a>
+        <ul class="nav-links">
+            <li><a href="#uvod">Úvod</a></li>
+            <li><a href="#role">Role</a></li>
+            <li><a href="#pravidla">Pravidla</a></li>
+            <li><a href="#projekty">Projekty a Lokace</a></li>
+        </ul>
+    </nav>
+
+    <header id="uvod">
         <h1>Czech Bus Simulátor 2.0</h1>
-        <p>Oficiální stránka naší herní komunity a projektů</p>
+        <p>Oficiální One-click stránka naší herní komunity</p>
     </header>
 
     <div class="container">
-        <div class="grid">
-            
-            <div class="card">
-                <h2>Vedení serveru</h2>
-                <p style="margin-bottom: 15px;">Za celým tímto projektem stojí náš hlavní zakladatel a vedení:</p>
-                <div class="owner-box">
-                    👑 Hlavní majitel: Zdeneček
+        
+        <section>
+            <div class="grid">
+                <div class="card">
+                    <h2>Vedení serveru</h2>
+                    <p style="margin-bottom: 15px;">Za celým tímto projektem stojí náš hlavní zakladatel a vedení:</p>
+                    <div class="owner-box">
+                        👑 Hlavní majitel: Zdeneček
+                    </div>
+                    <p>Připoj se k nám na herní platformě a našem Discordu:</p>
+                    <a href="https://discord.gg/jPJuJ7d4s4" target="_blank" class="btn">Připojit se na Discord</a>
+                    <a href="https://www.roblox.com/share?code=5c75c629b88b004eb9c58f4d1d902ec7&type=ExperienceDetails&stamp=1778924219034" target="_blank" class="btn roblox-btn" style="margin-left: 10px;">Spustit hru na Robloxu</a>
                 </div>
-                <p>Připoj se k našemu oficiálnímu komunitnímu serveru:</p>
-                <a href="https://discord.gg/jPJuJ7d4s4" target="_blank" class="btn">Připojit se na Discord</a>
-                <a href="https://www.roblox.com" target="_blank" class="btn roblox-btn" style="margin-left: 10px;">Najdi nás na Robloxu</a>
-            </div>
 
-            <div class="card">
-                <h2>Nabírání členů</h2>
-                <p>Hledáš skvělou partu lidí nebo se chceš podílet na tvorbě? Aktuálně máme otevřené brány pro nové tváře!</p>
-                <p style="margin-top: 10px; font-weight: bold; color: #2ed573;">● Hledáme: Řidiče, moderátory i vývojáře!</p>
-                <a href="https://discord.gg/jPJuJ7d4s4" target="_blank" class="btn" style="background-color: var(--primary);">Podat přihlášku přes Discord</a>
+                <div class="card">
+                    <h2>Nabírání členů</h2>
+                    <p>Hledáš skvělou partu lidí nebo se chceš podílet na tvorbě? Aktuálně máme otevřené brány pro nové tváře!</p>
+                    <p style="margin-top: 10px; font-weight: bold; color: #2ed573;">● Hledáme: Řidiče, moderátory i vývojáře!</p>
+                    <a href="https://discord.gg/jPJuJ7d4s4" target="_blank" class="btn" style="background-color: var(--primary);">Podat přihlášku přes Discord</a>
+                </div>
             </div>
+        </section>
 
+        <section id="role">
             <div class="card full-width">
                 <h2>Komunitní a herní role</h2>
                 <p class="info-text">Aktuální struktura rolí a obsazení platné od dnešního dne do 1. 9. 2026</p>
@@ -269,7 +362,9 @@
                     </div>
                 </div>
             </div>
+        </section>
 
+        <section id="pravidla">
             <div class="card full-width">
                 <h2>Pravidla našeho serveru</h2>
                 <p class="info-text">Tato pravidla vám předkládá Majitel serveru. Žádáme všechny členy o jejich přísné dodržování. Pravidla jsou platná do 1. 9. 2026, poté se mohou v závislosti na novém majiteli měnit.</p>
@@ -339,44 +434,50 @@
                     </ul>
                 </div>
             </div>
+        </section>
 
-            <div class="card">
-                <h2>Současné projekty</h2>
-                <p>Na čem v herním světě Czech bus simulátor 2.0 aktuálně pracujeme:</p>
-                <ul style="margin-top: 10px;">
-                    <li>Optimalizace stávajících modelů autobusů.</li>
-                    <li>Tvorba nového odbavovacího systému pro cestující.</li>
-                    <li>Pravidelné linkové směny a organizované eventy.</li>
-                </ul>
+        <section id="projekty">
+            <div class="grid">
+                <div class="card">
+                    <h2>Současné projekty</h2>
+                    <p>Na čem v herním světě Czech bus simulátor 2.0 aktuálně pracujeme:</p>
+                    <ul style="margin-top: 10px;">
+                        <li>Optimalizace stávajících modelů autobusů.</li>
+                        <li>Tvorba nového odbavovacího systému pro cestující.</li>
+                        <li>Pravidelné linkové směny a organizované eventy.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h2>Budoucí projekty</h2>
+                    <p>Na co se můžete v nejbližší době těšit:</p>
+                    <ul style="margin-top: 10px;">
+                        <li>Kompletní předělávka ekonomiky serveru (nákup vlastních autobusů).</li>
+                        <li>Implementace reálného počasí, které ovlivní jízdní vlastnosti.</li>
+                        <li>Mobilní aplikace pro řidiče (jízdní řády a statistiky).</li>
+                    </ul>
+                </div>
+
+                <div class="card full-width">
+                    <h2>Budoucí lokace ve hře</h2>
+                    <p>Kam se podíváme příště? Plánujeme rozšíření mapy o tato místa:</p>
+                    <ul style="margin-top: 10px;">
+                        <li><strong>Nové příměstské linky</strong> – Propojení center s okolními vesnicemi.</li>
+                        <li><strong>Horská oblast</strong> – Náročné zatáčky a serpentiny pro zkušené řidiče.</li>
+                        <li><strong>Moderní autobusové nádraží</strong> – Nové centrum pro setkávání a přestupy.</li>
+                    </ul>
+                </div>
             </div>
+        </section>
 
-            <div class="card">
-                <h2>Budoucí projekty</h2>
-                <p>Na co se můžete v nejbližší době těšit:</p>
-                <ul style="margin-top: 10px;">
-                    <li>Kompletní předělávka ekonomiky serveru (nákup vlastních autobusů).</li>
-                    <li>Implementace reálného počasí, které ovlivní jízdní vlastnosti.</li>
-                    <li>Mobilní aplikace pro řidiče (jízdní řády a statistiky).</li>
-                </ul>
-            </div>
-
-            <div class="card">
-                <h2>Budoucí lokace ve hře</h2>
-                <p>Kam se podíváme příště? Plánujeme rozšíření mapy o tato místa:</p>
-                <ul style="margin-top: 10px;">
-                    <li><strong>Nové příměstské linky</strong> – Propojení center s okolními vesnicemi.</li>
-                    <li><strong>Horská oblast</strong> – Náročné zatáčky a serpentiny pro zkušené řidiče.</li>
-                    <li><strong>Moderní autobusové nádraží</strong> – Nové centrum pro setkávání a přestupy.</li>
-                </ul>
-            </div>
-
+        <section>
             <div class="card full-width">
                 <h2>A mnoho dalšího...</h2>
                 <p>Naše komunita se neustále rozrůstá. Pořádáme pravidelné srazy, soutěže o hodnotné herní odměny a aktivně nasloucháme návrhům našich hráčů. Připoj se k nám ještě dnes přes náš Discord server a zažij ten nejlepší autobusový simulátor na Robloxu!</p>
                 <p style="margin-top: 15px; font-weight: bold; text-align: center;">Všem vám přeje hezký večer váš Majitel serveru! 🚌</p>
             </div>
+        </section>
 
-        </div>
     </div>
 
     <footer>
